@@ -1,7 +1,8 @@
 const compose = (...fns) => arg => fns.reduce((composed, f) => f(composed), arg);
 const log = item => {
-  console.log(item)
+  console.log(item);
 }
+
 // adds 0 before num if its 1st or 2nd digit is empty
 // i.e 1 => 001, 11 => 011
 const fillZeros = (n, s) => {
@@ -19,13 +20,11 @@ const evolve = (arr, rules = parseInt(process.argv[2], 10)) => {
     ruleSet[i] = parseInt(item, 10);
   });
 
-  const oldArr = [...arr];
-  oldArr.unshift(0);
-  oldArr.push(0);
-
+  const oldArr = [0, ...arr, 0];
   const newArr = [];
+
   oldArr.forEach((item, i) => {
-    if (i > 0 && i < oldArr.length - 1) {
+    if (i > 0 && i < oldArr.length -1) {
       let str = '' + oldArr[i - 1] + item + oldArr[i + 1];
       for (let x = 7; x > -1; x -= 1) {
         if (str === fillZeros(3, x.toString(2))) {
@@ -48,7 +47,7 @@ const displayColumn = column => {
     digit => parseInt(digit) === 1 ?
     '█' : ' '
   )
-  .join("")
+  .join("");
   log(str);
   return column;
 }
@@ -60,9 +59,7 @@ const magic = column =>
       evolve,
       magic
     )(column)
-    }, 
-    100, column
-  )
+  }, 100, column);
   
 
 const start = () => 
