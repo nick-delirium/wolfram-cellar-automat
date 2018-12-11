@@ -1,16 +1,15 @@
+const compose = (...fns) => arg => fns.reduce((composed, f) => f(composed), arg);
+const log = item => {
+  console.log(item)
+}
 // adds 0 before num if its 1st or 2nd digit is empty
 // i.e 1 => 001, 11 => 011
 const fillZeros = (n, s) => {
-  let zeros = '';
-  for (let i = 0; i < n - s.length; i += 1) {
-    zeros += '0';
-  }
-  const str = zeros + s;
-  return str;
+  return "0".repeat(n - s.length) + s;
 }
 
 // apply ruleset to get next gen
-const evolve = (arr, rules) => {
+const evolve = (arr, rules = parseInt(process.argv[2], 10)) => {
   let ruleSet = [];
   ruleSet = fillZeros(8, rules.toString(2))
     .split('')
@@ -29,7 +28,7 @@ const evolve = (arr, rules) => {
     if (i > 0 && i < oldArr.length - 1) {
       let str = '' + oldArr[i - 1] + item + oldArr[i + 1];
       for (let x = 7; x > -1; x -= 1) {
-        if (str === zeroFill(3, x.toString(2))) {
+        if (str === fillZeros(3, x.toString(2))) {
           newArr.push(ruleSet[x]);
         }
       }
@@ -38,24 +37,39 @@ const evolve = (arr, rules) => {
   return newArr;
 }
 
-let map = new Array(process.stdout.columns).fill(0);
-map[Math.floor(map.length / 2)] = 1;
-
-function main() {
-  let str = '';
-  map.forEach((item) => {
-    if (item === 1) {
-      str += '█';
-    } else {
-      str += ' ';
-    }
-  });
-  console.log(str);
-  map = evolve(map, parseInt(process.argv[2], 10));
-
-  setTimeout(() => {
-    main();
-  }, 50);
+const getConsoleSize = () => new Array(process.stdout.columns).fill(0);
+const getEntryColumn = column => {
+  column[Math.floor(column.length / 2)] = 1;
+  return column;
 }
 
-main();
+const displayColumn = column => {
+  const str = column.map(
+    digit => parseInt(digit) === 1 ?
+    '█' : ' '
+  )
+  .join("")
+  log(str);
+  return column;
+}
+
+const magic = column => 
+  setTimeout(column => {
+    compose(
+      displayColumn,
+      evolve,
+      magic
+    )(column)
+    }, 
+    100, column
+  )
+  
+
+const start = () => 
+  compose(
+    getConsoleSize,
+    getEntryColumn,
+    magic
+  )();
+
+start();
