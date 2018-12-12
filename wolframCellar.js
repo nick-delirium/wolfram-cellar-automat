@@ -23,7 +23,7 @@ const evolve = (arr, rules = parseInt(process.argv[2], 10)) => {
   const oldArr = [0, ...arr, 0];
   const newArr = [];
 
-  oldArr.forEach((item, i) => {
+  oldArr.map((item, i) => {
     if (i > 0 && i < oldArr.length -1) {
       let str = '' + oldArr[i - 1] + item + oldArr[i + 1];
       for (let x = 7; x > -1; x -= 1) {
@@ -59,7 +59,7 @@ const magic = column =>
       evolve,
       magic
     )(column)
-  }, 100, column);
+  }, 10, column);
   
 
 const start = () => 

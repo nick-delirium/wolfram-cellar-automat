@@ -1,7 +1,8 @@
 run 
 ```node wolframCellar.js <n>``` 
 where <n> is any number between 0 and 255.
-
+### Some nice rules
+122, 126, 22, 73
 ### Elementary cellular automata
 The simplest nontrivial cellular automaton would be one-dimensional, with two possible states per cell, and a cell's neighbors defined as the adjacent cells on either side of it. A cell and its two neighbors form a neighborhood of 3 cells, so there are 23 = 8 possible patterns for a neighborhood. A rule consists of deciding, for each pattern, whether the cell will be a 1 or a 0 in the next generation. There are then 28 = 256 possible rules.
 
